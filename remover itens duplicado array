@@ -1,0 +1,3 @@
+var arr = ['foo', 'bar', 'foo', 'bar', '2', '2'];
+var novaArr = arr.filter((este, i) => arr.indexOf(este) === i);
+console.log(novaArr);
