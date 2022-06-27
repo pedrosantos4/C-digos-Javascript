@@ -1,3 +1,5 @@
+var vars = {};
+vars.voz = "lojinha do seu zé, cpf 08787895455 e o cnpj é 79646701 0001 52, o email é pedro.santos4@zazvendas.com.br, o nome do cliente é Pedro Henrique Félix dos Santos e o celular dele é 11952264969";
 var listaEstabelecimentos = ["loja", "estabelecimento", "lojinha", "barzinhos", "Salão de Beleza", "salao de beleza", "salao de belesa", "çalao de beleza", "mercadinho", "mercado", "super mercado", "supermercado", "hipermercado"];
 vars.nomeLoja = "";
 vars.voz = vars.voz.replace("mil contra", "0001").replace("meia", "6").replace("meia dúzia", "6").replace("meia duzia", "6");
