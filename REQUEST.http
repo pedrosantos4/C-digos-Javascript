@@ -1,0 +1,15 @@
+POST http://10.0.44.102:4000/cubejs-api/graphql
+Content-Type: application/json
+Authorization: Bearer xxx
+X-REQUEST-TYPE: GraphQL
+
+query CubeQuery {
+  cube(where: { adquirente: { nomeAdquirente: { equals: "Ifood" } } }) {
+    
+    adquirente(orderBy: { count: desc }) {
+      count
+      nomeAdquirente
+      codigoAdquirente
+    }
+  }
+}
