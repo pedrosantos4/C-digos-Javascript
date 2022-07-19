@@ -2464,6 +2464,7 @@ var resp = [
         }
     }
 ];
+var vars = {};
 const groupBy = key => array =>
     array.reduce(
         (objectsByKeyValue, obj) => ({
@@ -2490,4 +2491,5 @@ const dados = groupBymethod(resp.map(x => {
 }));
 var strExib = "";
 Object.keys(dados).forEach(x => strExib += `${x}: ${dados[x] ? dados[x].length : "0"}\n`);
-console.log(strExib);
+vars.quantidadePorTipo = strExib;
+console.log(vars.quantidadePorTipo);
