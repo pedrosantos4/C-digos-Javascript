@@ -2894,7 +2894,34 @@ const dados = groupBymethod(resp.map(x => {
     return x.payment;
 }));
 var strExib = "";
-Object.keys(dados).forEach(x => strExib += `${x}: ${dados[x] ? dados[x].length : "0"}\n`);
+Object.keys(dados).forEach(x => strExib += `*${x}: ${dados[x] ? dados[x].length : "0"}*\n`);
 vars.quantidadePorTipo = strExib;
-console.log(vars.quantidadePorTipo);
-console.log(vars.quantidade);
+//console.log(vars.quantidadePorTipo);
+//console.log(vars.quantidade);
+
+
+//vars.periodo1 = vars.periodo;
+//vars.periodo = vars.periodo.italics();
+
+
+
+
+
+const calcularValor = (resp, campoBilling) => {
+    return resp.map(x => {
+        return x.billing[campoBilling];
+    }).reduce((a, b) => a+b, 0);
+};
+
+
+var debito = resp.filter(x => x.payment.method == "Débito");
+console.log(calcularValor(debito, "totalDebit"));
+
+var debito1 = resp.filter(x => x.payment.method == "Débito");
+console.log(calcularValor(debito1, "gmv"));
+console.log(debito1);
+
+
+vars.qtdDebito = dados["Débito"].length;
+vars.taxasDebito = resp.filter(x => x.payment.method == "Débito")
+console.log(vars.qtdDebito);
