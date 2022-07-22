@@ -2861,67 +2861,58 @@ var resp = [
     }
 ];
 var vars = {};
-vars.quantidade = resp.length;
-const groupBy = key => array =>
-  array.reduce((objectsByKeyValue, obj) => {
-    const value = obj[key];
-    objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
-    return objectsByKeyValue;
-  }, {});
-const groupBymethod = groupBy("method");
-const dados = groupBymethod(resp.map(x => {
-    if (x.payment.method == 'DEBIT') {
-        x.payment.method = "Débito";
-    }
-    if (x.payment.method == 'CREDIT') {
-        x.payment.method = "Crédito";
-    }
-    if (x.payment.method == 'MEAL_VOUCHER') {
-        x.payment.method = "Vale alimentação";
-    }
-    if (x.payment.method == 'FOOD_VOUCHER') {
-        x.payment.method = "Vale Refeição";
-    }
-    if (x.payment.method == 'CASH') {
-        x.payment.method = "Dinheiro";
-    }
-    if (x.payment.method == 'DIGITAL_WALLET') {
-        x.payment.method = "Carteira Digital";
-    }
-    if (x.payment.method == 'EXTERNAL') {
-        x.payment.method = "Outros";
-    }
-    return x.payment;
-}));
-var strExib = "";
-Object.keys(dados).forEach(x => strExib += `*${x}: ${dados[x] ? dados[x].length : "0"}*\n`);
-vars.quantidadePorTipo = strExib;
-//console.log(vars.quantidadePorTipo);
-//console.log(vars.quantidade);
-
-
-//vars.periodo1 = vars.periodo;
-//vars.periodo = vars.periodo.italics();
-
-
-
-
-
 const calcularValor = (resp, campoBilling) => {
     return resp.map(x => {
         return x.billing[campoBilling];
     }).reduce((a, b) => a+b, 0);
 };
-
-
-var debito = resp.filter(x => x.payment.method == "Débito");
-console.log(calcularValor(debito, "totalDebit"));
-
-var debito1 = resp.filter(x => x.payment.method == "Débito");
-console.log(calcularValor(debito1, "gmv"));
-console.log(debito1);
-
-
-vars.qtdDebito = dados["Débito"].length;
-vars.taxasDebito = resp.filter(x => x.payment.method == "Débito")
-console.log(vars.qtdDebito);
+vars.gmv = calcularValor(resp, "gmv");
+vars.totalDebit = calcularValor(resp, "totalDebit");
+vars.totalAreceber = vars.gmv - vars.totalDebit;
+vars.gmv = calcularValor(resp, "gmv").toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}).italics();
+vars.totalCredit = calcularValor(resp, "totalCredit").toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}).italics();
+vars.totalDebit = calcularValor(resp, "totalDebit").toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}).italics();
+vars.totalAreceber = vars.totalAreceber.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}).italics();
+vars.quantidade = resp.length;
+const groupBy = key => array =>
+array.reduce((objectsByKeyValue, obj) => {
+  const value = obj[key];
+  objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+  return objectsByKeyValue;
+}, {});
+const groupBymethod = groupBy("method");
+const dados = groupBymethod(resp.map(x => {
+  if (x.payment.method == 'DEBIT') {
+      x.payment.method = "Débito";
+  }
+  if (x.payment.method == 'CREDIT') {
+      x.payment.method = "Crédito";
+  }
+  if (x.payment.method == 'MEAL_VOUCHER') {
+      x.payment.method = "Vale alimentação";
+  }
+  if (x.payment.method == 'FOOD_VOUCHER') {
+      x.payment.method = "Vale Refeição";
+  }
+  if (x.payment.method == 'CASH') {
+      x.payment.method = "Dinheiro";
+  }
+  if (x.payment.method == 'DIGITAL_WALLET') {
+      x.payment.method = "Carteira Digital";
+  }
+  if (x.payment.method == 'EXTERNAL') {
+      x.payment.method = "Outros";
+  }
+  return x.payment;
+}));
+var strExib = "";
+Object.keys(dados).forEach(x => strExib += `*${x}: ${dados[x] ? dados[x].length : "0"}*\n`);
+vars.quantidadePorTipo = strExib;
+vars.quantidadePorTipo.italics();
+vars.qtdDebito = dados["Débito"] ? dados["Débito"].length : "0";
+vars.taxasDebito = resp.filter(x => x.payment.method == "Débito");
+vars.taxasDebito = calcularValor(vars.taxasDebito, "totalDebit");
+vars.taxasDebito = vars.taxasDebito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}).italics();
+vars.valorTotalPedidosDebito = resp.filter(x => x.payment.method == "Débito");
+vars.valorTotalPedidosDebito = calcularValor(vars.valorTotalPedidosDebito, "gmv");
+vars.valorTotalPedidosDebito = vars.valorTotalPedidosDebito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}).italics();
